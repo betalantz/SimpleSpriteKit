@@ -6,17 +6,26 @@
 //  Copyright © 2017 Olivier Tests. All rights reserved.
 //
 
-import SpriteKit
+//import SpriteKit
 import ARKit
 
 class Scene: SKScene {
+    var sceneView: ARSKView {
+        return view as! ARSKView
+    }
+    var sight: SKSpriteNode!
     
     override func didMove(to view: SKView) {
         // Setup your scene here
+        sight = SKSpriteNode(imageNamed: "sight")
+        addChild(sight)
     }
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+//        guard let currentFrame = sceneView.session.currentFrame,
+//            let scene = SKScene(fileNamed: "Scene")
+//            else { return }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
