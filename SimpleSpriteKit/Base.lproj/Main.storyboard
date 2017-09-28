@@ -38,6 +38,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HIT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjt-yU-6Cd">
                                 <rect key="frame" x="125" y="72" width="125" height="65"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="125" id="T25-7N-Tww"/>
                                     <constraint firstAttribute="height" constant="65" id="gwJ-qU-dCU"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="35"/>
