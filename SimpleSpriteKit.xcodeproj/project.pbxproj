@@ -112,9 +112,7 @@
 				BF17702F1F7B3DE4007790E0 /* Assets.xcassets */,
 				BF1770311F7B3DE4007790E0 /* LaunchScreen.storyboard */,
 				BF1770341F7B3DE4007790E0 /* Info.plist */,
-				BF31284B1F7C6F2E00B626EC /* collision.mp3 */,
-				BF31284D1F7C6F2E00B626EC /* explosion.mp3 */,
-				BF31284C1F7C6F2E00B626EC /* torpedo.mp3 */,
+				BF31284F1F7C81C700B626EC /* Sounds */,
 			);
 			path = SimpleSpriteKit;
 			sourceTree = "<group>";
@@ -135,6 +133,16 @@
 				BF17704A1F7B3DE4007790E0 /* Info.plist */,
 			);
 			path = SimpleSpriteKitUITests;
+			sourceTree = "<group>";
+		};
+		BF31284F1F7C81C700B626EC /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				BF31284B1F7C6F2E00B626EC /* collision.mp3 */,
+				BF31284D1F7C6F2E00B626EC /* explosion.mp3 */,
+				BF31284C1F7C6F2E00B626EC /* torpedo.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

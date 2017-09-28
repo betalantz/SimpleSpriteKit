@@ -10,11 +10,13 @@ import UIKit
 import SpriteKit
 import ARKit
 import Vision
+import AVFoundation
 
 class ViewController: UIViewController, ARSKViewDelegate {
     
     @IBOutlet weak var sceneView: ARSKView!
    
+    @IBOutlet weak var hitIndicator: UILabel!
     @IBOutlet weak var targetingLabel: UILabel!
     
     // Variable for storing the barcode request
@@ -22,6 +24,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
     // Creates a new timer object
     var qRTimer = Timer()
     var qRCenter: CGPoint?
+    var inTarget = false
     
     var player: AVAudioPlayer!
     
@@ -89,26 +92,26 @@ class ViewController: UIViewController, ARSKViewDelegate {
     
     // Starts a timer with a callback of the QR detection function. Repeats every 1 seconds.
     func scheduledTimerWithTimeInterval(){
-        qRTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.detectQR), userInfo: nil, repeats: true)
+        qRTimer = Timer.scheduledTimer(timeInterval: 0.66, target: self, selector: #selector(self.detectQR), userInfo: nil, repeats: true)
     }
     
     /********************************/
     /* Targetting    */
     /********************************/
     
-    func isTargeted() -> Bool {
+    func isTargeted() {
         if let realCenter = qRCenter{
             if realCenter.x > 0.45
                 && realCenter.x < 0.55
                 && realCenter.y > 0.42
                 && realCenter.y < 0.57 {
                 targetingLabel.isHidden = false
-                return true
+                inTarget = true
             } else {
                 targetingLabel.isHidden = true
+                inTarget = false
             }
         }
-        return false
     }
     
     /********************************/
@@ -118,37 +121,52 @@ class ViewController: UIViewController, ARSKViewDelegate {
     
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) {
         print("Tapped!")
-        self.playSoundEffect(ofType: .torpedo)
-        let inTarget = isTargeted()
+        self.detectQR()
+//        run(Sounds.torpedo)
+//        self.playSoundEffect(ofType: .torpedo)
         if inTarget {
+            flashHit(alpha: 0.0, start: 0, end: 10)
+            }
             print("Hit!")
-        }
     }
     
-    
-    
-    func playSoundEffect(ofType effect: SoundEffect) {
+    func flashHit(alpha: CGFloat, start: Int, end: Int) {
         
-        // Async to avoid substantial cost to graphics processing (may result in sound effect delay however)
-        DispatchQueue.main.async {
-            do
-            {
-                if let effectURL = Bundle.main.url(forResource: effect.rawValue, withExtension: "mp3") {
-                    
-                    self.player = try AVAudioPlayer(contentsOf: effectURL)
-                    self.player.play()
-                    
-                }
+        hitIndicator.text = "HIT"
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.hitIndicator.alpha = alpha
+        }, completion: { success in
+            
+            if start + 1 <= end {
+                self.flashHit(alpha: alpha == 1.0 ? 0.0 : 1.0, start: start + 1, end: end)
             }
-            catch let error as NSError {
-                print(error.description)
-            }
-        }
+        })
     }
-    enum SoundEffect: String {
-        case explosion = "explosion"
-        case collision = "collision"
-        case torpedo = "torpedo"
+    // Sound Effects
+    
+//    func playSoundEffect(ofType effect: SoundEffect) {
+//
+//        // Async to avoid substantial cost to graphics processing (may result in sound effect delay however)
+//        DispatchQueue.main.async {
+//            do
+//            {
+//                if let effectURL = Bundle.main.url(forResource: effect.rawValue, withExtension: "mp3") {
+//
+//                    self.player = try AVAudioPlayer(contentsOf: effectURL)
+//                    self.player.play()
+//
+//                }
+//            }
+//            catch let error as NSError {
+//                print(error.description)
+//            }
+//        }
+//    }
+    enum Sounds {
+        static let explosion = SKAction.playSoundFileNamed("explosion", waitForCompletion: false)
+        static let collision = SKAction.playSoundFileNamed("collision", waitForCompletion: false)
+        static let torpedo = SKAction.playSoundFileNamed("torpedo", waitForCompletion: false)
     }
     
     /********************************/
@@ -165,6 +183,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
         // Run the view's session
         sceneView.session.run(configuration)
         targetingLabel.isHidden = true
+        hitIndicator.alpha = 0.0
     }
     
     override func viewWillDisappear(_ animated: Bool) {
