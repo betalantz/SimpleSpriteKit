@@ -23,7 +23,9 @@ class ViewController: UIViewController, ARSKViewDelegate {
     var qRRequest:VNDetectBarcodesRequest?
     // Creates a new timer object
     var qRTimer = Timer()
+    // Variable for storing the center of tracked QR codes
     var qRCenter: CGPoint?
+    // Variable to report whether tracked QR code is in the target area
     var inTarget = false
     
     var player: AVAudioPlayer!
@@ -43,12 +45,11 @@ class ViewController: UIViewController, ARSKViewDelegate {
         sceneView.showsFPS = true
         sceneView.showsNodeCount = true
 
-
-
         // Load the SKScene from 'Scene.sks'
         if let scene = SKScene(fileNamed: "Scene") {
             sceneView.presentScene(scene)
         }
+        
         setupVisionRequest()
         
         // Starts our timer which will detect QR codes on a loop
@@ -74,6 +75,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
                     let center = CGPoint(x: rect.midX, y: rect.midY)
                     self.qRCenter = center
                     print ("Payload: \(barcode.payloadStringValue!) at \(center)")
+                    // Checks whether the tracked QR code is lined up in the crosshairs
                     self.isTargeted()
                 }
             }
@@ -90,7 +92,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
         }
     }
     
-    // Starts a timer with a callback of the QR detection function. Repeats every 1 seconds.
+    // Starts a timer with a callback of the QR detection function. Repeats every 0.66 seconds.
     func scheduledTimerWithTimeInterval(){
         qRTimer = Timer.scheduledTimer(timeInterval: 0.66, target: self, selector: #selector(self.detectQR), userInfo: nil, repeats: true)
     }
@@ -99,6 +101,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
     /* Targetting    */
     /********************************/
     
+    // Defines a square region in center of screen and detects whether QR code is located within it
     func isTargeted() {
         if let realCenter = qRCenter{
             if realCenter.x > 0.45
@@ -118,23 +121,20 @@ class ViewController: UIViewController, ARSKViewDelegate {
     /* Firing   */
     /********************************/
     
-    
+    // Detects screen tap and initiates a fresh QR detection and targetting
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) {
-        print("Tapped!")
+
         self.detectQR()
-//        run(Sounds.torpedo)
-//        self.playSoundEffect(ofType: .torpedo)
         if inTarget {
-            flashHit(alpha: 0.0, start: 0, end: 10)
+            flashHit(alpha: 0.0, start: 0, end: 6)
             }
-            print("Hit!")
     }
-    
+    // Flashes a 'hit' indicator near top of screen when QR code is hit
     func flashHit(alpha: CGFloat, start: Int, end: Int) {
         
         hitIndicator.text = "HIT"
         
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.hitIndicator.alpha = alpha
         }, completion: { success in
             
@@ -143,32 +143,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
             }
         })
     }
-    // Sound Effects
-    
-//    func playSoundEffect(ofType effect: SoundEffect) {
-//
-//        // Async to avoid substantial cost to graphics processing (may result in sound effect delay however)
-//        DispatchQueue.main.async {
-//            do
-//            {
-//                if let effectURL = Bundle.main.url(forResource: effect.rawValue, withExtension: "mp3") {
-//
-//                    self.player = try AVAudioPlayer(contentsOf: effectURL)
-//                    self.player.play()
-//
-//                }
-//            }
-//            catch let error as NSError {
-//                print(error.description)
-//            }
-//        }
-//    }
-    enum Sounds {
-        static let explosion = SKAction.playSoundFileNamed("explosion", waitForCompletion: false)
-        static let collision = SKAction.playSoundFileNamed("collision", waitForCompletion: false)
-        static let torpedo = SKAction.playSoundFileNamed("torpedo", waitForCompletion: false)
-    }
-    
+   
     /********************************/
     /* Fulfilling scene delegate    */
     /********************************/
@@ -198,16 +173,6 @@ class ViewController: UIViewController, ARSKViewDelegate {
         // Release any cached data, images, etc that aren't in use.
     }
     
-    // MARK: - ARSKViewDelegate
-    
-//    func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
-//        // Create and configure a node for the anchor added to the view's session.
-//        let labelNode = SKLabelNode(text: "👾")
-//        labelNode.horizontalAlignmentMode = .center
-//        labelNode.verticalAlignmentMode = .center
-//        return labelNode;
-//    }
-//    
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         
