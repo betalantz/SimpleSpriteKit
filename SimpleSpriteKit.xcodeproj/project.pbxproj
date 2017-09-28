@@ -51,6 +51,9 @@
 		BF1770441F7B3DE4007790E0 /* SimpleSpriteKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleSpriteKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1770481F7B3DE4007790E0 /* SimpleSpriteKitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSpriteKitUITests.swift; sourceTree = "<group>"; };
 		BF17704A1F7B3DE4007790E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF31284B1F7C6F2E00B626EC /* collision.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = collision.mp3; sourceTree = "<group>"; };
+		BF31284C1F7C6F2E00B626EC /* torpedo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = torpedo.mp3; sourceTree = "<group>"; };
+		BF31284D1F7C6F2E00B626EC /* explosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +112,9 @@
 				BF17702F1F7B3DE4007790E0 /* Assets.xcassets */,
 				BF1770311F7B3DE4007790E0 /* LaunchScreen.storyboard */,
 				BF1770341F7B3DE4007790E0 /* Info.plist */,
+				BF31284B1F7C6F2E00B626EC /* collision.mp3 */,
+				BF31284D1F7C6F2E00B626EC /* explosion.mp3 */,
+				BF31284C1F7C6F2E00B626EC /* torpedo.mp3 */,
 			);
 			path = SimpleSpriteKit;
 			sourceTree = "<group>";

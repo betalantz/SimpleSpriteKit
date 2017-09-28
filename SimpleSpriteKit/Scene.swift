@@ -9,14 +9,17 @@
 //import SpriteKit
 import ARKit
 
+
 class Scene: SKScene {
     var sceneView: ARSKView {
         return view as! ARSKView
     }
     var sight: SKSpriteNode!
     
+    
+    
     override func didMove(to view: SKView) {
-        // Setup your scene here
+        // Place targetting sight.png in center of screen
         sight = SKSpriteNode(imageNamed: "sight")
         addChild(sight)
     }
@@ -33,17 +36,17 @@ class Scene: SKScene {
             return
         }
         
-        // Create anchor using the camera's current position
-        if let currentFrame = sceneView.session.currentFrame {
-            
-            // Create a transform with a translation of 0.2 meters in front of the camera
-            var translation = matrix_identity_float4x4
-            translation.columns.3.z = -0.2
-            let transform = simd_mul(currentFrame.camera.transform, translation)
-            
-            // Add a new anchor to the session
-            let anchor = ARAnchor(transform: transform)
-            sceneView.session.add(anchor: anchor)
-        }
+//        // Create anchor using the camera's current position
+//        if let currentFrame = sceneView.session.currentFrame {
+//
+//            // Create a transform with a translation of 0.2 meters in front of the camera
+//            var translation = matrix_identity_float4x4
+//            translation.columns.3.z = -0.2
+//            let transform = simd_mul(currentFrame.camera.transform, translation)
+//
+//            // Add a new anchor to the session
+//            let anchor = ARAnchor(transform: transform)
+//            sceneView.session.add(anchor: anchor)
+//        }
     }
 }

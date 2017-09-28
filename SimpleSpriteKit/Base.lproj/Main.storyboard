@@ -19,24 +19,42 @@
                         <subviews>
                             <arskView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EO5-fy-WZq">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="tq9-Ml-cu3" appends="YES" id="KNw-xL-GDB"/>
+                                </connections>
                             </arskView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FIRE!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="stN-rV-XS4">
+                                <rect key="frame" x="148" y="536.5" width="79.5" height="39.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="33"/>
+                                <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EO5-fy-WZq" firstAttribute="leading" secondItem="cP8-R2-ikh" secondAttribute="leading" id="60k-Ay-yrK"/>
                             <constraint firstItem="EO5-fy-WZq" firstAttribute="bottom" secondItem="cP8-R2-ikh" secondAttribute="bottom" id="Ekh-7t-9jM"/>
                             <constraint firstItem="EO5-fy-WZq" firstAttribute="trailing" secondItem="cP8-R2-ikh" secondAttribute="trailing" id="ToN-RI-2AX"/>
+                            <constraint firstItem="cP8-R2-ikh" firstAttribute="bottom" secondItem="stN-rV-XS4" secondAttribute="bottom" constant="91" id="ZXY-58-QDP"/>
+                            <constraint firstItem="stN-rV-XS4" firstAttribute="centerX" secondItem="hKr-Yd-vPm" secondAttribute="centerX" id="cgQ-Oz-KLa"/>
                             <constraint firstItem="EO5-fy-WZq" firstAttribute="top" secondItem="hKr-Yd-vPm" secondAttribute="top" id="xgg-Dt-RQM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cP8-R2-ikh"/>
                     </view>
                     <connections>
                         <outlet property="sceneView" destination="EO5-fy-WZq" id="zEU-uE-kot"/>
+                        <outlet property="targetingLabel" destination="stN-rV-XS4" id="t3W-Lv-cD2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oew-1o-516" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="tq9-Ml-cu3">
+                    <connections>
+                        <action selector="didTapScreen:" destination="63K-Pe-Uts" id="UMr-L9-dZl"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="897" y="25"/>
+            <point key="canvasLocation" x="896.79999999999995" y="24.7376311844078"/>
         </scene>
     </scenes>
 </document>

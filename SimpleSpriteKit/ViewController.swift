@@ -15,10 +15,15 @@ class ViewController: UIViewController, ARSKViewDelegate {
     
     @IBOutlet weak var sceneView: ARSKView!
    
+    @IBOutlet weak var targetingLabel: UILabel!
+    
     // Variable for storing the barcode request
     var qRRequest:VNDetectBarcodesRequest?
     // Creates a new timer object
     var qRTimer = Timer()
+    var qRCenter: CGPoint?
+    
+    var player: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +51,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
         // Starts our timer which will detect QR codes on a loop
         scheduledTimerWithTimeInterval()
     }
+    
     /************************/
     /* The QR Functionality */
     /************************/
@@ -63,13 +69,15 @@ class ViewController: UIViewController, ARSKViewDelegate {
                     rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
                     rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
                     let center = CGPoint(x: rect.midX, y: rect.midY)
+                    self.qRCenter = center
                     print ("Payload: \(barcode.payloadStringValue!) at \(center)")
+                    self.isTargeted()
                 }
             }
         })
     }
     
-    // Gets the current image from the ARSCNView (Augmented Reality Scene View) and makes an Image Request Handler using that image.
+    // Gets the current image from the ARSKView (Augmented Reality Sprite Kit View) and makes an Image Request Handler using that image.
     // It then calls the handler's perform method, and passes it the request we made earlier.
     @objc func detectQR(){
         let cameraCurrent = sceneView.session.currentFrame?.capturedImage
@@ -85,6 +93,65 @@ class ViewController: UIViewController, ARSKViewDelegate {
     }
     
     /********************************/
+    /* Targetting    */
+    /********************************/
+    
+    func isTargeted() -> Bool {
+        if let realCenter = qRCenter{
+            if realCenter.x > 0.45
+                && realCenter.x < 0.55
+                && realCenter.y > 0.42
+                && realCenter.y < 0.57 {
+                targetingLabel.isHidden = false
+                return true
+            } else {
+                targetingLabel.isHidden = true
+            }
+        }
+        return false
+    }
+    
+    /********************************/
+    /* Firing   */
+    /********************************/
+    
+    
+    @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) {
+        print("Tapped!")
+        self.playSoundEffect(ofType: .torpedo)
+        let inTarget = isTargeted()
+        if inTarget {
+            print("Hit!")
+        }
+    }
+    
+    
+    
+    func playSoundEffect(ofType effect: SoundEffect) {
+        
+        // Async to avoid substantial cost to graphics processing (may result in sound effect delay however)
+        DispatchQueue.main.async {
+            do
+            {
+                if let effectURL = Bundle.main.url(forResource: effect.rawValue, withExtension: "mp3") {
+                    
+                    self.player = try AVAudioPlayer(contentsOf: effectURL)
+                    self.player.play()
+                    
+                }
+            }
+            catch let error as NSError {
+                print(error.description)
+            }
+        }
+    }
+    enum SoundEffect: String {
+        case explosion = "explosion"
+        case collision = "collision"
+        case torpedo = "torpedo"
+    }
+    
+    /********************************/
     /* Fulfilling scene delegate    */
     /********************************/
     /* We don't use any of this yet */
@@ -97,6 +164,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
 
         // Run the view's session
         sceneView.session.run(configuration)
+        targetingLabel.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,14 +181,14 @@ class ViewController: UIViewController, ARSKViewDelegate {
     
     // MARK: - ARSKViewDelegate
     
-    func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
-        // Create and configure a node for the anchor added to the view's session.
-        let labelNode = SKLabelNode(text: "👾")
-        labelNode.horizontalAlignmentMode = .center
-        labelNode.verticalAlignmentMode = .center
-        return labelNode;
-    }
-    
+//    func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
+//        // Create and configure a node for the anchor added to the view's session.
+//        let labelNode = SKLabelNode(text: "👾")
+//        labelNode.horizontalAlignmentMode = .center
+//        labelNode.verticalAlignmentMode = .center
+//        return labelNode;
+//    }
+//    
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         
